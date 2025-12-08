@@ -1,0 +1,11 @@
+node_modules
+.idea
+.vacode
+
+
+.env
+.DS_Store
+
+
+package-lock.json
+
