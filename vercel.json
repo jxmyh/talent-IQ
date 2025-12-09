@@ -1,0 +1,10 @@
+{
+  "root": "", // 强制指定根目录为 frontend
+  "installCommand": "npm run init", // 在 frontend 目录执行安装
+  "buildCommand": "npm run start", // 在 frontend 目录执行构建
+  // "outputDirectory": "dist", // 构建输出目录
+  "cache": false, // 禁用缓存，确保每次重新安装依赖
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
