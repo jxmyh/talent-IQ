@@ -18,11 +18,14 @@ app.use(
     credentials: true,
   })
 );
-app.use('/api/inngest', serve({
-  client: inngest,
+app.use(
+  '/api/inngest',
+  serve({
+    client: inngest,
 
-  functions: funtions,
-}))
+    functions: funtions,
+  })
+);
 console.log(ENV.PORT);
 
 // app.get('/', (req, res) => {
@@ -31,26 +34,32 @@ console.log(ENV.PORT);
 //   });
 // });
 
+// serve static files in production
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// API routes
 app.get('/health', (req, res) => {
   res.status(200).json({
     msg: 'healthy',
   });
 });
+
 app.get('/books', (req, res) => {
   res.status(200).json({
     msg: 'this is the books endpointt',
   });
 });
 
-// make our app ready for deployment
-
+// SPA fallback - serve React app for all non-API routes
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+// });
 if (ENV.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
   app.get('/{*any}', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
   });
 }
-
 // 初始化数据库连接
 const initDB = async () => {
   try {
