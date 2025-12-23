@@ -7,50 +7,43 @@ const app = express();
 
 const __dirname = path.resolve();
 
-// middleware
-app.use(express.json());
+console.log(ENV.PORT);
 
-// serve static files (works in both dev and production)
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// app.get('/', (req, res) => {
+//   res.status(200).json({
+//     msg: 'success from backend',
+//   });
+// });
 
-// API routes
 app.get('/health', (req, res) => {
   res.status(200).json({
     msg: 'healthy',
   });
 });
-
 app.get('/books', (req, res) => {
   res.status(200).json({
     msg: 'this is the books endpointt',
   });
 });
 
-// SPA fallback - serve React app for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
-});
+// make our app ready for deployment
 
-// Initialize database connection
-const initDB = async () => {
+if (ENV.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.get('/{*any}', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+  });
+}
+
+const startServer = async () => {
   try {
     await connectDB();
-    console.log('Database connected successfully');
+    app.listen(ENV.PORT, () =>
+      console.log('server is running on port ' + ENV.PORT)
+    );
   } catch (error) {
-    console.error('Database connection error:', error);
+    console.error('error starting thi server', error);
   }
 };
 
-// Only start server in local development
-if (process.env.NODE_ENV !== 'production') {
-  initDB().then(() => {
-    app.listen(ENV.PORT || 3000, () =>
-      console.log('server is running on port ' + (ENV.PORT || 3000))
-    );
-  });
-} else {
-  // In Vercel environment, just initialize DB
-  initDB();
-}
-
-export default app;
+startServer();
