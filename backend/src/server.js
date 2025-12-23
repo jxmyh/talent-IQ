@@ -3,29 +3,10 @@ import path from 'path';
 import { ENV } from './lib/env.js';
 import { connectDB } from './lib/db.js';
 
-import cors from 'cors';
-import { serve } from 'inngest/express';
-import { funtions, inngest } from './lib/inngest.js';
 const app = express();
 
 const __dirname = path.resolve();
 
-// middleware
-app.use(express.json());
-app.use(
-  cors({
-    origin: ENV.CLIENT_URL,
-    credentials: true,
-  })
-);
-app.use(
-  '/api/inngest',
-  serve({
-    client: inngest,
-
-    functions: funtions,
-  })
-);
 console.log(ENV.PORT);
 
 // app.get('/', (req, res) => {
@@ -34,54 +15,35 @@ console.log(ENV.PORT);
 //   });
 // });
 
-// serve static files in production
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-// API routes
 app.get('/health', (req, res) => {
   res.status(200).json({
     msg: 'healthy',
   });
 });
-
 app.get('/books', (req, res) => {
   res.status(200).json({
     msg: 'this is the books endpointt',
   });
 });
 
-// SPA fallback - serve React app for all non-API routes
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
-// });
+// make our app ready for deployment
+
 if (ENV.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
   app.get('/{*any}', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
   });
 }
-// 初始化数据库连接
-const initDB = async () => {
+
+const startServer = async () => {
   try {
     await connectDB();
-    console.log('Database connected successfully');
+    app.listen(ENV.PORT, () =>
+      console.log('server is running on port ' + ENV.PORT)
+    );
   } catch (error) {
-    console.error('Database connection error:', error);
+    console.error('error starting thi server', error);
   }
 };
 
-// 只在本地开发时启动服务器
-if (process.env.NODE_ENV !== 'production') {
-  const startServer = async () => {
-    await initDB();
-    app.listen(ENV.PORT || 3000, () =>
-      console.log('server is running on port ' + (ENV.PORT || 3000))
-    );
-  };
-  startServer();
-} else {
-  // Vercel环境中只初始化数据库
-  initDB();
-}
-
-export default app;
+startServer();
