@@ -51,15 +51,28 @@ if (ENV.NODE_ENV === 'production') {
   });
 }
 
-const startServer = async () => {
+// 初始化数据库连接
+const initDB = async () => {
   try {
     await connectDB();
-    app.listen(ENV.PORT, () =>
-      console.log('server is running on port ' + ENV.PORT)
-    );
+    console.log('Database connected successfully');
   } catch (error) {
-    console.error('error starting thi server', error);
+    console.error('Database connection error:', error);
   }
 };
 
-startServer();
+// 只在本地开发时启动服务器
+if (process.env.NODE_ENV !== 'production') {
+  const startServer = async () => {
+    await initDB();
+    app.listen(ENV.PORT || 3000, () =>
+      console.log('server is running on port ' + (ENV.PORT || 3000))
+    );
+  };
+  startServer();
+} else {
+  // Vercel环境中只初始化数据库
+  initDB();
+}
+
+export default app;
