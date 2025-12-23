@@ -2,11 +2,12 @@
   "name": "talent-iq",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "./backend/src/server.js",
   "scripts": {
-    "build": "cd frontend && npm run build",
+    "init": "npm install --prefix backend && npm  install --prefix frontend && npm run build --prefix frontend",
+    "build": "npm run start --prefix frontend",
     "start": "npm run start --prefix backend",
-    "vercel-build": "cd frontend && npm install && npm run build"
+    "vercel-build": "npm install --prefix backend && npm  install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "",

@@ -1,10 +1,9 @@
 {
-  "buildCommand": "",
-  "outputDirectory": "",
+  "buildCommand": "cd frontend && npm run build",
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/backend/src/server.js"
+      "destination": "/api/index.js"
     }
   ]
 }
