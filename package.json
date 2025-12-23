@@ -7,7 +7,7 @@
     "init": "npm install --prefix backend && npm  install --prefix frontend && npm run build --prefix frontend",
     "build": "npm run build --prefix frontend",
     "start": "npm run start --prefix backend",
-    "vercel-build": "npm install --prefix backend && npm  install --prefix frontend && npm run build --prefix frontend && npm run start --prefix backend"
+    "vercel-build": "npm install --prefix backend && npm  install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "",
