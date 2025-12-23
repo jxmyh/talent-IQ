@@ -7,35 +7,31 @@ const app = express();
 
 const __dirname = path.resolve();
 
-console.log(ENV.PORT);
+// middleware
+app.use(express.json());
 
-// app.get('/', (req, res) => {
-//   res.status(200).json({
-//     msg: 'success from backend',
-//   });
-// });
+// serve static files (works in both dev and production)
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
+// API routes
 app.get('/health', (req, res) => {
   res.status(200).json({
     msg: 'healthy',
   });
 });
+
 app.get('/books', (req, res) => {
   res.status(200).json({
     msg: 'this is the books endpointt',
   });
 });
 
-// make our app ready for deployment
+// SPA fallback - serve React app for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+});
 
-if (ENV.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  app.get('/{*any}', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
-  });
-}
-
-// 初始化数据库连接
+// Initialize database connection
 const initDB = async () => {
   try {
     await connectDB();
@@ -45,17 +41,15 @@ const initDB = async () => {
   }
 };
 
-// 只在本地开发时启动服务器
+// Only start server in local development
 if (process.env.NODE_ENV !== 'production') {
-  const startServer = async () => {
-    await initDB();
+  initDB().then(() => {
     app.listen(ENV.PORT || 3000, () =>
       console.log('server is running on port ' + (ENV.PORT || 3000))
     );
-  };
-  startServer();
+  });
 } else {
-  // Vercel环境中只初始化数据库
+  // In Vercel environment, just initialize DB
   initDB();
 }
 

@@ -1,9 +1,10 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
     {
-      "src": "./backend/src/server.js",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/backend/src/server.js"
     }
   ]
 }
