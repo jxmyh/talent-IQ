@@ -1,9 +1,10 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "",
+  "outputDirectory": "",
+  "rewrites": [
     {
-      "src": "./backend/src/server.js",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/backend/src/server.js"
     }
   ]
 }
