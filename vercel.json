@@ -1,15 +1,9 @@
 {
-  "buildCommand": "cd frontend && npm run build",
-  "builds": [
+  "buildCommand": "npm run start ",
+  "rewrites": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+      "source": "/(.*)",
+      "destination": "/backend/src/server.js"
     }
   ]
 }
