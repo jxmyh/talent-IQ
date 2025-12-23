@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cd frontend && npm install && npm run build",
     "start": "npm run start --prefix backend",
-    "vercel-build": "cd backend && npm install && npm run start --prefix backend"
+    "vercel-build": "cd backend && npm install && npm run start"
   },
   "keywords": [],
   "author": "",
