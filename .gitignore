@@ -6,7 +6,7 @@ node_modules
 .env
 .DS_Store
 
-
+jxmyh99_db_user.txt
 package-lock.json
 
 .vercel
