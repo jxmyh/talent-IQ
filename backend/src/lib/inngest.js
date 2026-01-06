@@ -19,8 +19,8 @@ const syncUser = inngest.createFunction(
       event.data;
     // 防止中国用户没有first_name和last_name时使用username
     const name =
-      first_name && last_name
-        ? `${first_name || 'test'} ${last_name || ''}`
+      first_name || last_name
+        ? `${first_name || ''} ${last_name || ''}`
         : username;
     const newUser = {
       clerkId: id,
