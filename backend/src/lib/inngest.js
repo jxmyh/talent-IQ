@@ -15,12 +15,17 @@ const syncUser = inngest.createFunction(
   },
   async ({ event }) => {
     await connectDB();
-    const { id, email_addresses, first_name, last_name, image_url } =
+    const { id, email_addresses, first_name, last_name, image_url, username } =
       event.data;
+    // 防止中国用户没有first_name和last_name时使用username
+    const name =
+      first_name && last_name
+        ? username
+        : `${first_name || 'test'} ${last_name || ''}`;
     const newUser = {
       clerkId: id,
       email: email_addresses[0]?.email_address,
-      name: `${first_name || ''} ${last_name || ''}`,
+      name,
       profileImage: image_url,
     };
     await User.create(newUser);
