@@ -20,7 +20,7 @@ const syncUser = inngest.createFunction(
     const newUser = {
       clerkId: id,
       email: email_addreesses[0]?.email_address,
-      name: `${first_name || ''} ${last_name || ''}`,
+      name: `${first_name || 'test'} ${last_name || 'test'}`,
       profileImage: image_url,
     };
     await User.create(newUser);
