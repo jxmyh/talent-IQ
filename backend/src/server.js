@@ -7,6 +7,9 @@ import { serve } from 'inngest/express';
 import { ENV } from './lib/env.js';
 import { connectDB } from './lib/db.js';
 import { inngest, functions } from './lib/inngest.js';
+import { clerkMiddleware } from '@clerk/express';
+
+import chatRoutes from './routes/chatRoutes.js';
 
 const app = express();
 
@@ -20,6 +23,7 @@ app.use(
     Credentials: true,
   })
 );
+app.use(clerkMiddleware());
 
 app.use(
   '/api/inngest',
@@ -29,25 +33,13 @@ app.use(
   })
 );
 
-console.log(ENV.PORT);
-
-// app.get('/', (req, res) => {
-//   res.status(200).json({
-//     msg: 'success from backend',
-//   });
-// });
+app.use('/api/chart', chatRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({
     msg: 'healthy',
   });
 });
-app.get('/books', (req, res) => {
-  res.status(200).json({
-    msg: 'this is the books endpointt',
-  });
-});
-
 // make our app ready for deployment
 
 // if (ENV.NODE_ENV === 'production') {
