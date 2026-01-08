@@ -2,19 +2,18 @@ import { chatClient } from '../lib/stream.js';
 
 export async function getStreamToken(req, res) {
   try {
-    // use clerkId form Stream (no mongodb _id)
+    // use clerkId from Stream (no mongodb _id)
     const token = chatClient.createToken(req.user.clerkId);
 
-    res.status(200).join({
+    res.status(200).json({
       token,
       userId: req.user.clerkId,
       userName: req.user.name,
       userImage: req.user.image,
     });
   } catch (error) {
-    res.status(500),
-      join({
-        msssage: 'Internal server error',
-      });
+    res.status(500).join({
+      msssage: 'Internal server error',
+    });
   }
 }
