@@ -9,7 +9,7 @@ export const protecRoute = [
       const clerkId = req.auth().userId;
 
       if (!clerkId) return res.status(401).json({ message: 'Unauthorized' });
-      // find user in db by clearkId
+      // find user in db by clearkId测试
 
       const user = await User.findOne({ clerkId });
 
