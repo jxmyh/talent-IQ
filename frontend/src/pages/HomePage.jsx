@@ -12,7 +12,7 @@ function HomePage() {
     <div>
       <button
         className="btn btn-primary"
-        onClick={() => toast.success('This is a  success toast')}>
+        onClick={() => toast.success('This is a success toast')}>
         click me
       </button>
       <SignedOut>
@@ -23,9 +23,8 @@ function HomePage() {
 
       <SignedIn>
         <SignOutButton />
+        <UserButton />
       </SignedIn>
-
-      <UserButton />
     </div>
   );
 }
