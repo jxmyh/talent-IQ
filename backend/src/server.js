@@ -10,6 +10,7 @@ import { inngest, functions } from './lib/inngest.js';
 import { clerkMiddleware } from '@clerk/express';
 
 import chatRoutes from './routes/chatRoutes.js';
+import sessionRoutes from './routes/sessionRoutes.js';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(
 );
 
 app.use('/api/chart', chatRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({
